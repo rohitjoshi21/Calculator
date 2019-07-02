@@ -12,19 +12,19 @@ syms = {'÷':'/','×':'*','%':'*0.01'}
 
 # Main GUI
 #-----------------------------------------------------------------------------
-scnfrm = tk.Frame(root,width = 300, height = 50)
-scnfrm.grid(row = 0, column = 0)
 
-display = tk.Entry(scnfrm,bd=0, width = 21,highlightthickness=0,bg='#AAAAAA',textvariable = exp,font=('Helvetica',25),relief=tk.FLAT)
-display.grid(row = 0, column = 0)
+#Display Screen
+scnfrm = tk.Frame(root,width=380,height=100,relief=tk.SUNKEN,bd=4)
+scnfrm.grid(row = 0, column = 0,pady=10,padx=10)
+scnfrm.propagate(False)
+
+display = tk.Entry(scnfrm,bd=0,highlightthickness=0,bg='#AAAAAA',textvariable = exp,font=('Helvetica',25))
+display.pack(expand=True,fill=tk.BOTH)
 display.focus()
-display.insert(tk.END,exp)
 
 anscr = tk.Label(scnfrm,bd=0,bg='#AAAAAA',anchor=tk.E, width = 21, textvariable = ans, font=('Helvetica',25))
-anscr.grid(row = 1, column = 0)
+anscr.pack(expand=True,fill=tk.BOTH)
 
-bodyfrm = tk.Frame(root)
-bodyfrm.grid(row = 1, column = 0)
 #-----------------------------------------------------------------------------
 
 
@@ -33,7 +33,6 @@ bodyfrm.grid(row = 1, column = 0)
 def enter(symbol,keyboard = False):
     global state, todelete
     i = display.index(tk.INSERT)
-
     if symbol == None:
         exp.set(state)
     else:
@@ -67,8 +66,8 @@ def equal(*args):
 def solve(expr):
     for z in syms:
         expr = expr.replace(z,syms[z])
-        
-    return str(eval(expr))
+    ans = eval(expr)
+    return str(int(ans)) if ans == int(ans) else str(ans)
     
 def ac():
     global state
@@ -115,9 +114,12 @@ display.bind_all('<KeyPress>',keytyped)
 exp.set('')
 ans.set('')
 
-def button(symbol,position,span=1,height = 80,width = 80,func = None):
-    ss = tk.Frame(bodyfrm,height=height,width=width)
-    ss.grid(row = position[0],column = position[1],rowspan=span)
+bodyfrm = tk.Frame(root)
+bodyfrm.grid(row = 1, column = 0)
+
+def button(symbol,position,rspan=1,height = 80,width = 80,func = None):
+    ss = tk.Frame(bodyfrm,height=height*rspan,width=width)
+    ss.grid(row = position[0],column = position[1],rowspan=rspan)
     ss.propagate(False)
     
     btn = tk.Button(ss,text=symbol,bg='#222222',fg='#EEEEEE',font=('Arial',15))
@@ -130,26 +132,26 @@ def button(symbol,position,span=1,height = 80,width = 80,func = None):
 
 # Buttons
 
-button('9',(0,0))
+button('7',(0,0))
 button('8',(0,1))
-button('7',(0,2))
+button('9',(0,2))
 button('Del',(0,3),func = delete)
 button('AC',(0,4),func = ac)
 
 
 
-button('6',(1,0))
+button('4',(1,0))
 button('5',(1,1))
-button('4',(1,2))
+button('6',(1,2))
 button('×',(1,3))
 button('÷',(1,4))
 
 
 
-button('3',(2,0))
+button('1',(2,0))
 button('2',(2,1))
-button('1',(2,2))
-button('+',(2,3),span=2,height=160)
+button('3',(2,2))
+button('+',(2,3),rspan=2)
 button('-',(2,4))
 
 button('.',(3,0))
@@ -157,6 +159,8 @@ button('0',(3,1))
 button('%',(3,2))
 button('=',(3,4),func = equal)
 
+
+#buttons = [['7',],rspan=1,func=None],]
 
 root.update()
 tk.mainloop()
