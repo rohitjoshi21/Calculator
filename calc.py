@@ -1,5 +1,8 @@
-import tkinter as tk
+#!/usr/bin/python3
 
+import tkinter as tk
+import math
+import re
 
 root = tk.Tk()
 root.title('Calculator')
@@ -8,13 +11,17 @@ exp = tk.StringVar()
 ans = tk.StringVar()
 state = ''
 todelete = False
-syms = {'÷':'/','×':'*','%':'*0.01'}
+syms = {'÷':'/','×':'*','%':'*0.01','^':'**','MOD':'%'}
 
 # Main GUI
 #-----------------------------------------------------------------------------
 
+master = tk.Frame(root,width=400,height=600,bd=10,bg='#9AC')
+master.grid(row = 0, column = 0)
+master.propagate(False)
+
 #Display Screen
-scnfrm = tk.Frame(root,width=380,height=100,relief=tk.SUNKEN,bd=4)
+scnfrm = tk.Frame(master,width=380,height=100,relief=tk.SUNKEN,bd=4)
 scnfrm.grid(row = 0, column = 0,pady=10,padx=10)
 scnfrm.propagate(False)
 
@@ -44,7 +51,7 @@ def enter(symbol,keyboard = False):
         if not todelete:
             state = state[:i] + symbol + state[i:]
             exp.set(state) 
-            display.icursor(i+1)
+            display.icursor(i+len(symbol))
         else:
             if symbol.isdigit():
                 state = ''
@@ -54,6 +61,25 @@ def enter(symbol,keyboard = False):
                 todelete = False
                 enter(symbol)
     ans.set('')
+
+def keytyped(event):
+    global state
+    if len(event.keysym) > 1:
+        if event.keysym == 'Return' or event.keysym == 'KP_Enter':
+            equal()
+            key = None
+        elif event.keysym == 'BackSpace':
+            delete(True)
+            key = None
+        else:
+            key = event.char if len(event.char) == 1 else None
+    else:
+        key = event.keysym
+    if key != None:
+        if key.isalpha():
+            enter(None)
+        else:
+            enter(key,True)
             
 def equal(*args):
     global state, todelete
@@ -66,6 +92,8 @@ def equal(*args):
 def solve(expr):
     for z in syms:
         expr = expr.replace(z,syms[z])
+    if '!' in expr:
+        pass
     ans = eval(expr)
     return str(int(ans)) if ans == int(ans) else str(ans)
     
@@ -85,36 +113,17 @@ def delete(keyboard = False):
     display.icursor(i)
     ans.set('')
     
-def keytyped(event):
-    global state
-    if len(event.keysym) > 1:
-        if event.keysym == 'Return' or event.keysym == 'KP_Enter':
-            equal()
-            key = None
-        elif event.keysym == 'BackSpace':
-            delete(True)
-            key = None
-        else:
-            key = event.char if len(event.char) == 1 else None
-    else:
-        key = event.keysym
-    if key != None:
-        if key.isalpha():
-            enter(None)
-        else:
-            enter(key,True)
+
     
 #-----------------------------------------------------------------------------
 
         
 
-
-
 display.bind_all('<KeyPress>',keytyped)
 exp.set('')
 ans.set('')
 
-bodyfrm = tk.Frame(root)
+bodyfrm = tk.Frame(master,relief=tk.FLAT,bd=2)
 bodyfrm.grid(row = 1, column = 0)
 
 def button(symbol,position,rspan=1,height = 80,width = 80,func = None):
@@ -131,33 +140,42 @@ def button(symbol,position,rspan=1,height = 80,width = 80,func = None):
     
 
 # Buttons
+x = 0
 
-button('7',(0,0))
-button('8',(0,1))
-button('9',(0,2))
-button('Del',(0,3),func = delete)
-button('AC',(0,4),func = ac)
+button('(',(x,0))
+button(')',(x,1))
+button('^',(x,2))
+button('!',(x,3))
+button(' MOD ',(x,4))
+
+x += 1
+button('7',(x,0))
+button('8',(x,1))
+button('9',(x,2))
+button('Del',(x,3),func = delete)
+button('AC',(x,4),func = ac)
 
 
+x += 1
+button('4',(x,0))
+button('5',(x,1))
+button('6',(x,2))
+button('×',(x,3))
+button('÷',(x,4))
 
-button('4',(1,0))
-button('5',(1,1))
-button('6',(1,2))
-button('×',(1,3))
-button('÷',(1,4))
 
+x += 1
+button('1',(x,0))
+button('2',(x,1))
+button('3',(x,2))
+button('+',(x,3),rspan=2)
+button('-',(x,4))
 
-
-button('1',(2,0))
-button('2',(2,1))
-button('3',(2,2))
-button('+',(2,3),rspan=2)
-button('-',(2,4))
-
-button('.',(3,0))
-button('0',(3,1))
-button('%',(3,2))
-button('=',(3,4),func = equal)
+x += 1
+button('.',(x,0))
+button('0',(x,1))
+button('%',(x,2))
+button('=',(x,4),func = equal)
 
 
 #buttons = [['7',],rspan=1,func=None],]
