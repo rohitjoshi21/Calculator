@@ -1,12 +1,17 @@
 #!/usr/bin/python3
 
 import tkinter as tk
-import math
-import re
 
 root = tk.Tk()
 root.title('Calculator')
+root.withdraw()
+root.update_idletasks()
+x = (root.winfo_screenwidth() - 400) / 2
+y = (root.winfo_screenheight() - 500) / 2
+root.geometry("+%d+%d" % (x, y))
+root.deiconify()
 
+#Initializing Variables
 exp = tk.StringVar()
 ans = tk.StringVar()
 state = ''
@@ -177,8 +182,6 @@ button('0',(x,1))
 button('%',(x,2))
 button('=',(x,4),func = equal)
 
-
-#buttons = [['7',],rspan=1,func=None],]
-
 root.update()
 tk.mainloop()
+
