@@ -1,6 +1,8 @@
 #!/usr/bin/python3
+__author__ = 'Rohit Joshi'
 
 import tkinter as tk
+from math import *
 
 root = tk.Tk()
 root.title('Calculator')
@@ -92,16 +94,42 @@ def equal(*args):
         ans.set(solve(state))
     except:
         ans.set('Syntax Error')
+##    ans.set(solve(state))
     todelete = True
 
 def solve(expr):
     for z in syms:
         expr = expr.replace(z,syms[z])
     if '!' in expr:
-        pass
+        expr = insertfactorial(expr)
     ans = eval(expr)
-    return str(int(ans)) if ans == int(ans) else str(ans)
     
+    return str(int(ans)) if ans == int(ans) else str(ans)
+
+def insertfactorial(exp):
+    finding = True
+    while finding:
+        finding = False
+        for i,c in enumerate(exp):
+            if c == "!" and i >= 1:
+                finding = True
+                openb = 0
+                closeb = 0
+                for j,ch in enumerate(exp[i-1::-1]):
+                    if ch == '(':
+                        openb += 1
+                    if ch == ')':
+                        closeb += 1
+                    if openb == closeb:
+                        replaceable = exp[i-j-1:i]
+                        exp = exp.replace(replaceable,'factorial('+replaceable+')')
+                        exp = exp.replace('!','',1)
+                        break
+                break
+    
+    return exp
+                    
+                      
 def ac():
     global state
     state = ''
