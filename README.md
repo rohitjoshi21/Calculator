@@ -10,8 +10,8 @@ For Linux, run this code in terminal if you dont have tkinter installed.
 
 ### Built With
 
-*[tkinter](https://github.com/topics/tkinter)
+-[tkinter](https://github.com/topics/tkinter)- The GUI framework for Python
 
 ### Author
 
-@rohitjoshi21
+[@rohitjoshi21](https://github.com/rohitjoshi21)
