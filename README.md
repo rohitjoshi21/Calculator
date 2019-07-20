@@ -7,7 +7,7 @@ A simple GUI based calculator for simple mathematical operations.
 You need tkinter to run this.
 If you are using windows you are ready to go.
 For Linux, run this code in terminal if you dont have tkinter installed.
-`sudo apt-get install python3-t`
+```sudo apt-get install python3-t```
 
 ### Screenshot
 
