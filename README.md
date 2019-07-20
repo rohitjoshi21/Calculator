@@ -2,6 +2,8 @@
 
 A simple GUI based calculator for simple mathematical operations.
 
+-----
+
 ## :crystal_ball: Prerequisites
 
 You need tkinter to run this.
@@ -10,10 +12,13 @@ For Linux, run this code in terminal if you dont have tkinter installed.
 ```
 sudo apt-get install python3-tk
 ```
+----------
 
 ## :camera: Screenshot
 
 ![Calc](Screenshots/Screenshot1.png)
+
+----------
 
 ## :floppy_disk: Get Started
 
@@ -25,10 +30,13 @@ git clone git@github.com:rohitjoshi21/Calculator.git
 ```
 python3 Calculator.py
 ```
+----------
 
 ## :hammer: Built With
 
 - [tkinter](https://github.com/topics/tkinter) - The GUI framework for Python
+
+----------
 
 ## :octocat: Author
 
