@@ -2,6 +2,11 @@
 
 A simple GUI based calculator for simple mathematical operations.
 
+Special Features:-
+
+1. It can perform modular division.
+2. It can perform factorial calculation.
+
 -----
 
 ## :crystal_ball: Prerequisites
