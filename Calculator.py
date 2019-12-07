@@ -55,7 +55,7 @@ def enter(symbol,keyboard = False):
                 symbol = list(syms.keys())[list(syms.values()).index(symbol)]
             i -= 1
             
-        if not todelete:
+        if not todelete or keyboard:
             state = state[:i] + symbol + state[i:]
             exp.set(state) 
             display.icursor(i+len(symbol))
