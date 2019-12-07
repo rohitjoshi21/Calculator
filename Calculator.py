@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+
 __author__ = 'Rohit Joshi'
 
 import tkinter as tk
@@ -45,112 +46,112 @@ anscr.pack(expand=True,fill=tk.BOTH)
 #Functions
 #-----------------------------------------------------------------------------
 def enter(symbol,keyboard = False):
-    global state, todelete
-    i = display.index(tk.INSERT)
-    if symbol == None:
-        exp.set(state)
-    else:
-        if keyboard:
-            if symbol in syms.values():
-                symbol = list(syms.keys())[list(syms.values()).index(symbol)]
-            i -= 1
-            
-        if not todelete or keyboard:
-            state = state[:i] + symbol + state[i:]
-            exp.set(state) 
-            display.icursor(i+len(symbol))
-        else:
-            if symbol.isdigit():
-                state = ''
-                todelete = False
-                enter(symbol)  
-            else:
-                todelete = False
-                enter(symbol)
-    ans.set('')
+	global state, todelete
+	i = display.index(tk.INSERT)
+	if symbol == None:
+		exp.set(state)
+	else:
+		if keyboard:
+			if symbol in syms.values():
+				symbol = list(syms.keys())[list(syms.values()).index(symbol)]
+			i -= 1
+			
+		if not todelete or keyboard:
+			state = state[:i] + symbol + state[i:]
+			exp.set(state) 
+			display.icursor(i+len(symbol))
+		else:
+			if symbol.isdigit():
+				state = ''
+				todelete = False
+				enter(symbol)  
+			else:
+				todelete = False
+				enter(symbol)
+	ans.set('')
 
 def keytyped(event):
-    global state
-    if len(event.keysym) > 1:
-        if event.keysym == 'Return' or event.keysym == 'KP_Enter':
-            equal()
-            key = None
-        elif event.keysym == 'BackSpace':
-            delete(True)
-            key = None
-        else:
-            key = event.char if len(event.char) == 1 else None
-    else:
-        key = event.keysym
-    if key != None:
-        if key.isalpha():
-            enter(None)
-        else:
-            enter(key,True)
-            
+	global state
+	if len(event.keysym) > 1:
+		if event.keysym == 'Return' or event.keysym == 'KP_Enter':
+			equal()
+			key = None
+		elif event.keysym == 'BackSpace':
+			delete(True)
+			key = None
+		else:
+			key = event.char if len(event.char) == 1 else None
+	else:
+		key = event.keysym
+	if key != None:
+		if key.isalpha():
+			enter(None)
+		else:
+			enter(key,True)
+			
 def equal(*args):
-    global state, todelete
-    try:
-        ans.set(solve(state))
-    except:
-        ans.set('Syntax Error')
+	global state, todelete
+	try:
+		ans.set(solve(state))
+	except:
+		ans.set('Syntax Error')
 ##    ans.set(solve(state))
-    todelete = True
+	todelete = True
 
 def solve(expr):
-    for z in syms:
-        expr = expr.replace(z,syms[z])
-    if '!' in expr:
-        expr = insertfactorial(expr)
-    ans = eval(expr)
-    
-    return str(int(ans)) if ans == int(ans) else str(ans)
+	for z in syms:
+		expr = expr.replace(z,syms[z])
+	if '!' in expr:
+		expr = insertfactorial(expr)
+	ans = eval(expr)
+	
+	return str(int(ans)) if ans == int(ans) else str(ans)
 
 def insertfactorial(exp):
-    finding = True
-    while finding:
-        finding = False
-        for i,c in enumerate(exp):
-            if c == "!" and i >= 1:
-                finding = True
-                openb = 0
-                closeb = 0
-                for j,ch in enumerate(exp[i-1::-1]):
-                    if ch == '(':
-                        openb += 1
-                    if ch == ')':
-                        closeb += 1
-                    if openb == closeb:
-                        replaceable = exp[i-j-1:i]
-                        exp = exp.replace(replaceable,'factorial('+replaceable+')')
-                        exp = exp.replace('!','',1)
-                        break
-                break
-    
-    return exp
-                    
-                      
+	finding = True
+	while finding:
+		finding = False
+		for i,c in enumerate(exp):
+			if c == "!" and i >= 1:
+				finding = True
+				openb = 0
+				closeb = 0
+				for j,ch in enumerate(exp[i-1::-1]):
+					if ch == '(':
+						openb += 1
+					if ch == ')':
+						closeb += 1
+					if openb == closeb:
+						replaceable = exp[i-j-1:i]
+						exp = exp.replace(replaceable,'factorial('+replaceable+')')
+						exp = exp.replace('!','',1)
+						break
+				break
+	
+	return exp
+					
+					  
 def ac():
-    global state
-    state = ''
-    exp.set(state)
-    ans.set('')
-    
+	global state
+	state = ''
+	exp.set(state)
+	ans.set('')
+	
 def delete(keyboard = False):
-    i = display.index(tk.INSERT) - 1
-    if keyboard:
-        i += 1
-    global state
-    state = state[:i]+state[i+1:]
-    exp.set(state)
-    display.icursor(i)
-    ans.set('')
-    
+	i = display.index(tk.INSERT) - 1
+	if keyboard:
+		i += 1
+	global state
+	state = state[:i]+state[i+1:]
+	exp.set(state)
+	display.icursor(i)
+	ans.set('')
+	
 
-    
+	
 #-----------------------------------------------------------------------------
 
-        
+		
 
 display.bind_all('<KeyPress>',keytyped)
 exp.set('')
@@ -160,17 +161,17 @@ bodyfrm = tk.Frame(master,relief=tk.FLAT,bd=2)
 bodyfrm.grid(row = 1, column = 0)
 
 def button(symbol,position,rspan=1,height = 80,width = 80,func = None):
-    ss = tk.Frame(bodyfrm,height=height*rspan,width=width)
-    ss.grid(row = position[0],column = position[1],rowspan=rspan)
-    ss.propagate(False)
-    
-    btn = tk.Button(ss,text=symbol,bg='#222222',fg='#EEEEEE',font=('Arial',15))
-    btn.pack(expand=True,fill=tk.BOTH)
-    if func == None:
-        btn['command'] = lambda:enter(symbol)
-    else:
-        btn['command'] = func
-    
+	ss = tk.Frame(bodyfrm,height=height*rspan,width=width)
+	ss.grid(row = position[0],column = position[1],rowspan=rspan)
+	ss.propagate(False)
+	
+	btn = tk.Button(ss,text=symbol,bg='#222222',fg='#EEEEEE',font=('Arial',15))
+	btn.pack(expand=True,fill=tk.BOTH)
+	if func == None:
+		btn['command'] = lambda:enter(symbol)
+	else:
+		btn['command'] = func
+	
 
 # Buttons
 x = 0
@@ -178,15 +179,15 @@ x = 0
 button('(',(x,0))
 button(')',(x,1))
 button('^',(x,2))
-button('!',(x,3))
-button(' MOD ',(x,4))
+button('Del',(x,3),func = delete)
+button('AC',(x,4),func = ac)
 
 x += 1
 button('7',(x,0))
 button('8',(x,1))
 button('9',(x,2))
-button('Del',(x,3),func = delete)
-button('AC',(x,4),func = ac)
+button('!',(x,3))
+button('MOD',(x,4))
 
 
 x += 1
